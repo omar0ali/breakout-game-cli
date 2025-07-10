@@ -19,7 +19,7 @@ func CreatePlayer(width int, window *Window) *Player {
 	}
 }
 
-func (p *Player) Update() {
+func (p *Player) Draw() {
 	_, height := p.window.GetScreenSize()
 	for i := 0; i < p.width; i++ {
 		p.window.SetContent(p.X+i, height-1, tcell.RuneBlock)

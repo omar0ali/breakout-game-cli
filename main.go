@@ -6,7 +6,10 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-var player *Player
+var (
+	player *Player
+	ball   *Ball
+)
 
 func main() {
 	window, err := CreateWindow("Breakout Game", 25)
@@ -17,6 +20,7 @@ func main() {
 
 	// Objects
 	player := CreatePlayer(10, window)
+	ball := CreateBall(window, player)
 
 	window.InitEventsKeys(
 		func(ek *tcell.EventKey) {
@@ -31,7 +35,13 @@ func main() {
 			}
 		}, func() {
 			// animation to draw
-			player.Update()
+			player.Draw()
+			ball.Draw()
+			if ball.Update() == 0 { // game over
+				window.Close()
+				exit <- 0
+				return
+			}
 		}, exit,
 	)
 
