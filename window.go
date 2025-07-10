@@ -75,5 +75,4 @@ func (s *Window) Close() {
 
 func (s *Window) SetContent(x, y int, prune rune) {
 	s.screen.SetContent(x, y, prune, nil, s.style)
-	s.screen.Show()
 }
