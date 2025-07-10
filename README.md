@@ -9,12 +9,6 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 
 ## Getting Started
 
-```
-```
 ```bash
 go run main.go
 ```
-```
-
-
-
