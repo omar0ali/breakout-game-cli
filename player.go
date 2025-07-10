@@ -29,5 +29,13 @@ func (p *Player) Update() {
 // this function is used to update the coordinates of the player, so they can move left or right
 
 func (p *Player) UpdateCoords(x int) {
+	width, _ := p.window.GetScreenSize()
+	if p.X+p.width >= width-1 {
+		p.X = p.X - 1
+		return
+	} else if p.X <= 1 {
+		p.X = p.X + 1
+		return
+	}
 	p.X = p.X + x
 }
