@@ -6,6 +6,8 @@ type Ball struct {
 	window *Window
 	Up     bool
 	Down   bool
+	Left   bool
+	Right  bool
 	Player *Player
 }
 
@@ -17,13 +19,15 @@ func CreateBall(window *Window, player *Player) *Ball {
 		window: window,
 		Up:     false,
 		Down:   true,
+		Left:   true,
+		Right:  false,
 		Player: player,
 	}
 	return ball
 }
 
 func (b *Ball) Update() int {
-	_, height := b.window.GetScreenSize()
+	width, height := b.window.GetScreenSize()
 	if b.Down {
 		b.Y = b.Y + 1
 		if b.Y >= height-1 {
@@ -44,6 +48,20 @@ func (b *Ball) Update() int {
 		if b.Y <= 0 {
 			b.Down = true
 			b.Up = false
+		}
+	}
+	if b.Left {
+		b.X = b.X - 1
+		if b.X <= 0 {
+			b.Right = true
+			b.Left = false
+		}
+	}
+	if b.Right {
+		b.X = b.X + 1
+		if b.X >= width {
+			b.Right = false
+			b.Left = true
 		}
 	}
 	return 1

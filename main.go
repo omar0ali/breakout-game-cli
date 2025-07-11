@@ -12,7 +12,7 @@ var (
 )
 
 func main() {
-	window, err := CreateWindow("Breakout Game", 25)
+	window, err := CreateWindow("Breakout Game", 60) // frame rate can be changed from here
 	if err != nil {
 		log.Panic(err)
 	}
