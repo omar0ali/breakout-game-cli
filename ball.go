@@ -1,26 +1,27 @@
 package main
 
 type Ball struct {
-	X      int
-	Y      int
-	window *Window
-	Up     bool
-	Down   bool
-	Left   bool
-	Right  bool
-	Player *Player
+	window    *Window
+	Player    *Player
+	point     Point
+	direction Direction
+	velocity  Velocity
 }
 
 func CreateBall(window *Window, player *Player) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
-		X:      width / 2,
-		Y:      height / 2,
+		point: Point{
+			X: float64(width / 2),
+			Y: float64(height / 2),
+		},
 		window: window,
-		Up:     false,
-		Down:   true,
-		Left:   true,
-		Right:  false,
+		direction: Direction{
+			Up:    false,
+			Down:  true,
+			Left:  true,
+			Right: false,
+		},
 		Player: player,
 	}
 	return ball
@@ -28,45 +29,44 @@ func CreateBall(window *Window, player *Player) *Ball {
 
 func (b *Ball) Update() int {
 	width, height := b.window.GetScreenSize()
-	if b.Down {
-		b.Y = b.Y + 1
-		if b.Y >= height-1 {
+	if b.direction.Down {
+		b.point.Y = b.point.Y + 1
+		if b.point.Y >= float64(height-1) {
 			startPos := b.Player.X
 			endPos := b.Player.X + b.Player.width - 1
 
-			if b.X < startPos || b.X > endPos {
+			if b.point.X < float64(startPos) || b.point.X > float64(endPos) {
 				// Missed paddle — Game over
 				return 0
 			}
-
-			b.Down = false
-			b.Up = true
+			b.direction.Up = true
+			b.direction.Down = false
 		}
 	}
-	if b.Up {
-		b.Y = b.Y - 1
-		if b.Y <= 0 {
-			b.Down = true
-			b.Up = false
+	if b.direction.Up {
+		b.point.Y = b.point.Y - 1
+		if b.point.Y <= 0 {
+			b.direction.Down = true
+			b.direction.Up = false
 		}
 	}
-	if b.Left {
-		b.X = b.X - 1
-		if b.X <= 0 {
-			b.Right = true
-			b.Left = false
+	if b.direction.Left {
+		b.point.X = b.point.X - 1
+		if b.point.X <= 0 {
+			b.direction.Right = true
+			b.direction.Left = false
 		}
 	}
-	if b.Right {
-		b.X = b.X + 1
-		if b.X >= width {
-			b.Right = false
-			b.Left = true
+	if b.direction.Right {
+		b.point.X = b.point.X + 1
+		if b.point.X >= float64(width) {
+			b.direction.Right = false
+			b.direction.Left = true
 		}
 	}
 	return 1
 }
 
 func (b *Ball) Draw() {
-	b.window.SetContent(b.X, b.Y, '0')
+	b.window.SetContent(int(b.point.X), int(b.point.Y), '0')
 }

@@ -12,7 +12,7 @@ var (
 )
 
 func main() {
-	window, err := CreateWindow("Breakout Game", 60) // frame rate can be changed from here
+	window, err := CreateWindow("Breakout Game", 55) // frame rate can be changed from here
 	if err != nil {
 		log.Panic(err)
 	}
@@ -26,12 +26,10 @@ func main() {
 		func(ek *tcell.EventKey) {
 			switch ek.Key() {
 			// to update an object coordiatnes, not to animate
-			case tcell.KeyUp:
-				window.SetContent(0, 0, 'O')
 			case tcell.KeyLeft:
-				player.UpdateCoords(-2) // left
+				player.UpdateCoords(-5) // left
 			case tcell.KeyRight:
-				player.UpdateCoords(2) // right
+				player.UpdateCoords(5) // right
 			}
 		}, func() {
 			// animation to draw
