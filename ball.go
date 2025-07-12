@@ -1,72 +1,71 @@
 package main
 
+import "math"
+
 type Ball struct {
-	window    *Window
-	Player    *Player
-	point     Point
-	direction Direction
-	velocity  Velocity
+	Point     Point
+	Direction Direction
+	Velocity  Velocity
 }
 
-func CreateBall(window *Window, player *Player) *Ball {
+const BallSpeed float64 = 15
+
+func CreateBall() *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
-		point: Point{
+		// placing the ball (middle of the screen) start point
+		Point: Point{
 			X: float64(width / 2),
 			Y: float64(height / 2),
 		},
-		window: window,
-		direction: Direction{
+		Direction: Direction{
 			Up:    false,
 			Down:  true,
 			Left:  true,
 			Right: false,
 		},
-		Player: player,
+		Velocity: Velocity{
+			X: 0,
+			Y: 0,
+		},
 	}
 	return ball
 }
 
-func (b *Ball) Update() int {
-	width, height := b.window.GetScreenSize()
-	if b.direction.Down {
-		b.point.Y = b.point.Y + 1
-		if b.point.Y >= float64(height-1) {
-			startPos := b.Player.X
-			endPos := b.Player.X + b.Player.width - 1
+func (b *Ball) Update(dt float64) int {
+	width, height := window.GetScreenSize()
+	// Move using direction and speed
+	b.Velocity.SetFromDirection(BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
 
-			if b.point.X < float64(startPos) || b.point.X > float64(endPos) {
-				// Missed paddle — Game over
-				return 0
-			}
-			b.direction.Up = true
-			b.direction.Down = false
+	b.Point.X += b.Velocity.X * dt
+	b.Point.Y += b.Velocity.Y * dt
+
+	// Bounce logic
+	if b.Point.Y >= float64(height) {
+		playerStartX := float64(player.X - 1)
+		playerEndX := player.X + float64(player.PaddleWdith)
+
+		if b.Point.X < playerStartX || b.Point.X > playerEndX {
+			return 0 // missed paddle
 		}
+		b.Direction.Down = false
+		b.Direction.Up = true
 	}
-	if b.direction.Up {
-		b.point.Y = b.point.Y - 1
-		if b.point.Y <= 0 {
-			b.direction.Down = true
-			b.direction.Up = false
-		}
+	if b.Point.Y <= 0 {
+		b.Direction.Up = false
+		b.Direction.Down = true
 	}
-	if b.direction.Left {
-		b.point.X = b.point.X - 1
-		if b.point.X <= 0 {
-			b.direction.Right = true
-			b.direction.Left = false
-		}
+	if b.Point.X <= 0 {
+		b.Direction.Left = false
+		b.Direction.Right = true
 	}
-	if b.direction.Right {
-		b.point.X = b.point.X + 1
-		if b.point.X >= float64(width) {
-			b.direction.Right = false
-			b.direction.Left = true
-		}
+	if b.Point.X >= float64(width-1) {
+		b.Direction.Left = true
+		b.Direction.Right = false
 	}
 	return 1
 }
 
 func (b *Ball) Draw() {
-	b.window.SetContent(int(b.point.X), int(b.point.Y), '0')
+	window.SetContent(int(math.Round(b.Point.X)), int(math.Round(b.Point.Y)), '0')
 }

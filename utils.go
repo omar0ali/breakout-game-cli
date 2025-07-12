@@ -16,3 +16,22 @@ type Velocity struct {
 	X float64
 	Y float64
 }
+
+func (v *Velocity) Set(x, y float64) {
+	v.X = x
+	v.Y = y
+}
+
+func (v *Velocity) SetFromDirection(speed float64, up, down, left, right bool) {
+	v.X, v.Y = 0, 0
+	if left {
+		v.X = -speed
+	} else if right {
+		v.X = speed
+	}
+	if up {
+		v.Y = -speed
+	} else if down {
+		v.Y = speed
+	}
+}
