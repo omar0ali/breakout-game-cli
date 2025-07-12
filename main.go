@@ -9,18 +9,20 @@ import (
 var (
 	player *Player
 	ball   *Ball
+	window *Window
+	err    error
 )
 
 func main() {
-	window, err := CreateWindow("Breakout Game", 55) // frame rate can be changed from here
+	window, err = CreateWindow("Breakout Game", 33) // frame rate can be changed from here
 	if err != nil {
 		log.Panic(err)
 	}
 	exit := make(chan int)
 
 	// Objects
-	player := CreatePlayer(10, window)
-	ball := CreateBall(window, player)
+	player = CreatePlayer(10)
+	ball = CreateBall()
 
 	window.InitEventsKeys(
 		func(ek *tcell.EventKey) {
@@ -31,11 +33,11 @@ func main() {
 			case tcell.KeyRight:
 				player.UpdateCoords(5) // right
 			}
-		}, func() {
+		}, func(delta float64) {
 			// animation to draw
 			player.Draw()
 			ball.Draw()
-			if ball.Update() == 0 { // game over
+			if ball.Update(delta) == 0 { // game over
 				window.Close()
 				exit <- 0
 				return
