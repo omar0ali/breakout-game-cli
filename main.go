@@ -21,21 +21,23 @@ func main() {
 	exit := make(chan int)
 
 	// Objects
-	player = CreatePlayer(10)
-	ball = CreateBall()
+	player = CreatePlayer(10, 50, 5)
+	ball = CreateBall(20)
 
 	window.InitEventsKeys(
-		func(ek *tcell.EventKey) {
+		func(ek *tcell.EventKey, delta float64) {
 			switch ek.Key() {
 			// to update an object coordiatnes, not to animate
 			case tcell.KeyLeft:
-				player.UpdateCoords(-5) // left
+				player.StartMove(-1) // left
 			case tcell.KeyRight:
-				player.UpdateCoords(5) // right
+				player.StartMove(1) // right
 			}
 		}, func(delta float64) {
 			// animation to draw
 			player.Draw()
+			player.Update(delta)
+
 			ball.Draw()
 			if ball.Update(delta) == 0 { // game over
 				window.Close()

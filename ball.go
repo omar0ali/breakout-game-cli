@@ -6,11 +6,10 @@ type Ball struct {
 	Point     Point
 	Direction Direction
 	Velocity  Velocity
+	BallSpeed float64
 }
 
-const BallSpeed float64 = 15
-
-func CreateBall() *Ball {
+func CreateBall(ballSpeed float64) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
 		// placing the ball (middle of the screen) start point
@@ -28,25 +27,26 @@ func CreateBall() *Ball {
 			X: 0,
 			Y: 0,
 		},
+		BallSpeed: ballSpeed,
 	}
 	return ball
 }
 
 func (b *Ball) Update(dt float64) int {
 	width, height := window.GetScreenSize()
-	// Move using direction and speed
-	b.Velocity.SetFromDirection(BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
+	b.Velocity.SetFromDirection(b.BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
 
 	b.Point.X += b.Velocity.X * dt
 	b.Point.Y += b.Velocity.Y * dt
 
-	// Bounce logic
+	// bounce logic
 	if b.Point.Y >= float64(height) {
 		playerStartX := float64(player.X - 1)
-		playerEndX := player.X + float64(player.PaddleWdith)
+		playerEndX := player.X + float64(player.PaddleWidth)
 
+		// ball fall over the paddle
 		if b.Point.X < playerStartX || b.Point.X > playerEndX {
-			return 0 // missed paddle
+			return 0
 		}
 		b.Direction.Down = false
 		b.Direction.Up = true
