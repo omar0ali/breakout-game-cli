@@ -9,6 +9,18 @@ type Ball struct {
 	BallSpeed float64
 }
 
+func (b *Ball) SetBallPosition(point Point) {
+	b.Point = point
+}
+
+func (b *Ball) ResetBallPosition() {
+	width, height := window.GetScreenSize()
+	b.SetBallPosition(Point{
+		X: float64(width / 2),
+		Y: float64(height / 2),
+	})
+}
+
 func CreateBall(ballSpeed float64) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
@@ -32,7 +44,7 @@ func CreateBall(ballSpeed float64) *Ball {
 	return ball
 }
 
-func (b *Ball) Update(dt float64) int {
+func (b *Ball) Update(dt float64) {
 	width, height := window.GetScreenSize()
 	b.Velocity.SetFromDirection(b.BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
 
@@ -46,7 +58,7 @@ func (b *Ball) Update(dt float64) int {
 
 		// ball fall over the paddle
 		if b.Point.X < playerStartX || b.Point.X > playerEndX {
-			return 0
+			b.ResetBallPosition()
 		}
 		b.Direction.Down = false
 		b.Direction.Up = true
@@ -63,7 +75,6 @@ func (b *Ball) Update(dt float64) int {
 		b.Direction.Left = true
 		b.Direction.Right = false
 	}
-	return 1
 }
 
 func (b *Ball) Draw() {

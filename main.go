@@ -39,11 +39,7 @@ func main() {
 			player.Update(delta)
 
 			ball.Draw()
-			if ball.Update(delta) == 0 { // game over
-				window.Close()
-				exit <- 0
-				return
-			}
+			ball.Update(delta)
 		}, exit,
 	)
 
