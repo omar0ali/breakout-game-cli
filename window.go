@@ -35,7 +35,11 @@ func CreateWindow(title string, durationTicker time.Duration) (*Window, error) {
 	return window, nil
 }
 
-func (s *Window) InitEventsKeys(callbackEvents func(*tcell.EventKey), callbackFrames func(delta float64), exit chan int) {
+func (s *Window) InitEventsKeys(
+	callbackEvents func(ev *tcell.EventKey, delta float64),
+	callbackFrames func(delta float64),
+	exit chan int,
+) {
 	go func() {
 		for {
 			events := s.Screen.PollEvent()
@@ -48,7 +52,7 @@ func (s *Window) InitEventsKeys(callbackEvents func(*tcell.EventKey), callbackFr
 					exit <- 0
 					return
 				}
-				callbackEvents(ev)
+				callbackEvents(ev, delta)
 			}
 		}
 	}()
