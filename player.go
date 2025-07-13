@@ -1,43 +1,84 @@
 package main
 
-import "github.com/gdamore/tcell/v2"
+import (
+	"math"
+
+	"github.com/gdamore/tcell/v2"
+)
 
 type Player struct {
-	X           float64
-	PaddleWdith int
-	Direction   Direction
+	X        float64
+	Velocity Velocity
+
+	PlayerSpeed float64
+	JumpBy      float64
+	PaddleWidth int
+
+	// used when the ball is moving
+	Moving   bool
+	TargetX  float64
+	Traveled float64
 }
 
-const PlayerSpeed float64 = 10
-
-func CreatePlayer(paddleWdith int) *Player {
+func CreatePlayer(paddleWidth int, playerSpeed, jumpBy float64) *Player {
 	screenWidth, _ := window.GetScreenSize()
-	middlePos := float64((screenWidth / 2) - (paddleWdith / 2)) // the middle pos is that start drawing the the bar
+	startPositionOfPaddle := float64((screenWidth / 2) - (paddleWidth / 2)) // the middle pos is that start drawing the the bar
 
 	return &Player{
-		X:           middlePos,
-		PaddleWdith: paddleWdith,
+		X:           startPositionOfPaddle,
+		Velocity:    Velocity{X: 0, Y: 0},
+		PlayerSpeed: playerSpeed,
+		JumpBy:      jumpBy,
+		PaddleWidth: paddleWidth,
 	}
 }
 
 func (p *Player) Draw() {
 	_, height := window.GetScreenSize()
-	for i := 0; i < p.PaddleWdith; i++ {
+	for i := 0; i < p.PaddleWidth; i++ {
 		window.SetContent(int(p.X+float64(i)), height-1, tcell.RuneBlock)
 	}
 }
 
-// this function is used to update the coordinates of the player, so they can move left or right
-
-func (p *Player) UpdateCoords(x float64) {
-	width, _ := window.GetScreenSize()
-
-	if p.X+float64(p.PaddleWdith) > float64(width) {
-		p.X = float64(width - p.PaddleWdith)
-		return
-	} else if p.X < 0 {
-		p.X = 0
+func (p *Player) StartMove(dir int) {
+	if p.Moving {
 		return
 	}
-	p.X = p.X + x
+
+	p.Moving = true
+	p.Traveled = 0
+
+	if dir < 0 {
+		p.Velocity.X = -p.PlayerSpeed
+		p.TargetX = p.X - p.JumpBy
+	} else {
+		p.Velocity.X = p.PlayerSpeed
+		p.TargetX = p.X + p.JumpBy
+	}
+}
+
+func (p *Player) Update(dt float64) {
+	if !p.Moving {
+		return
+	}
+
+	step := p.Velocity.X * dt
+	p.X += step
+	p.Traveled += math.Abs(step)
+
+	if p.Traveled >= p.JumpBy {
+		p.X = p.TargetX
+		p.Moving = false
+		p.Velocity.X = 0
+	}
+	// boundary check
+	screenWidth, _ := window.GetScreenSize()
+	if p.X < 0 {
+		p.X = 0
+		p.Moving = false
+	}
+	if p.X+float64(p.PaddleWidth) > float64(screenWidth) {
+		p.X = float64(screenWidth - p.PaddleWidth)
+		p.Moving = false
+	}
 }

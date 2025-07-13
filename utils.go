@@ -17,11 +17,6 @@ type Velocity struct {
 	Y float64
 }
 
-func (v *Velocity) Set(x, y float64) {
-	v.X = x
-	v.Y = y
-}
-
 func (v *Velocity) SetFromDirection(speed float64, up, down, left, right bool) {
 	v.X, v.Y = 0, 0
 	if left {
