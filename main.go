@@ -4,42 +4,52 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
-)
-
-var (
-	player *Player
-	ball   *Ball
-	window *Window
-	err    error
+	"github.com/omar0ali/breakout-game-cli/core"
+	"github.com/omar0ali/breakout-game-cli/entities"
 )
 
 func main() {
-	window, err = CreateWindow("Breakout Game", 33) // frame rate can be changed from here
+	window, err := core.CreateWindow("Breakout Game", 33) // frame rate can be changed from here
 	if err != nil {
 		log.Panic(err)
 	}
 	exit := make(chan int)
+	// gmae config
+
+	config := entities.GameConfig{
+		BallSpeed:         20,
+		PlayerSpeed:       50,
+		PlayerPaddleWidth: 10,
+		PlayerJumpBy:      5,
+	}
 
 	// Objects
-	player = CreatePlayer(10, 50, 5)
-	ball = CreateBall(20)
+	player := entities.CreatePlayer(window, config)
+	ball := entities.CreateBall(window, config)
+	ctx := entities.GameContext{
+		Window: window,
+		Player: player,
+		Ball:   ball,
+		Objects: []entities.Entity{
+			player, ball,
+		},
+	}
 
 	window.InitEventsKeys(
 		func(ek *tcell.EventKey, delta float64) {
 			switch ek.Key() {
 			// to update an object coordiatnes, not to animate
 			case tcell.KeyLeft:
-				player.StartMove(-1) // left
+				player.TurnLeft()
 			case tcell.KeyRight:
-				player.StartMove(1) // right
+				player.TurnRigth()
 			}
 		}, func(delta float64) {
 			// animation to draw
-			player.Draw()
-			player.Update(delta)
-
-			ball.Draw()
-			ball.Update(delta)
+			for _, obj := range ctx.Objects {
+				obj.Draw(ctx)
+				obj.Update(ctx, delta)
+			}
 		}, exit,
 	)
 
