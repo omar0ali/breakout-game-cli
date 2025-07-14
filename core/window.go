@@ -1,4 +1,5 @@
-package main
+// Package core
+package core
 
 import (
 	"fmt"

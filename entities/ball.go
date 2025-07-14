@@ -1,51 +1,56 @@
-package main
+package entities
 
-import "math"
+import (
+	"math"
+
+	"github.com/omar0ali/breakout-game-cli/core"
+	"github.com/omar0ali/breakout-game-cli/utils"
+)
 
 type Ball struct {
-	Point     Point
-	Direction Direction
-	Velocity  Velocity
+	Point     utils.Point
+	Direction utils.Direction
+	Velocity  utils.Velocity
 	BallSpeed float64
 }
 
-func (b *Ball) SetBallPosition(point Point) {
+func (b *Ball) SetBallPosition(point utils.Point) {
 	b.Point = point
 }
 
-func (b *Ball) ResetBallPosition() {
-	width, height := window.GetScreenSize()
-	b.SetBallPosition(Point{
+func (b *Ball) ResetBallPosition(ctx GameContext) {
+	width, height := ctx.Window.GetScreenSize()
+	b.SetBallPosition(utils.Point{
 		X: float64(width / 2),
 		Y: float64(height / 2),
 	})
 }
 
-func CreateBall(ballSpeed float64) *Ball {
+func CreateBall(window *core.Window, config GameConfig) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
 		// placing the ball (middle of the screen) start point
-		Point: Point{
+		Point: utils.Point{
 			X: float64(width / 2),
 			Y: float64(height / 2),
 		},
-		Direction: Direction{
+		Direction: utils.Direction{
 			Up:    false,
 			Down:  true,
 			Left:  true,
 			Right: false,
 		},
-		Velocity: Velocity{
+		Velocity: utils.Velocity{
 			X: 0,
 			Y: 0,
 		},
-		BallSpeed: ballSpeed,
+		BallSpeed: config.BallSpeed,
 	}
 	return ball
 }
 
-func (b *Ball) Update(dt float64) {
-	width, height := window.GetScreenSize()
+func (b *Ball) Update(ctx GameContext, dt float64) {
+	width, height := ctx.Window.GetScreenSize()
 	b.Velocity.SetFromDirection(b.BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
 
 	b.Point.X += b.Velocity.X * dt
@@ -53,12 +58,12 @@ func (b *Ball) Update(dt float64) {
 
 	// bounce logic
 	if b.Point.Y >= float64(height) {
-		playerStartX := float64(player.X - 1)
-		playerEndX := player.X + float64(player.PaddleWidth)
+		playerStartX := float64(ctx.Player.X - 1)
+		playerEndX := ctx.Player.X + float64(ctx.Player.PaddleWidth)
 
 		// ball fall over the paddle
 		if b.Point.X < playerStartX || b.Point.X > playerEndX {
-			b.ResetBallPosition()
+			b.ResetBallPosition(ctx)
 		}
 		b.Direction.Down = false
 		b.Direction.Up = true
@@ -77,6 +82,6 @@ func (b *Ball) Update(dt float64) {
 	}
 }
 
-func (b *Ball) Draw() {
-	window.SetContent(int(math.Round(b.Point.X)), int(math.Round(b.Point.Y)), '0')
+func (b *Ball) Draw(ctx GameContext) {
+	ctx.Window.SetContent(int(math.Round(b.Point.X)), int(math.Round(b.Point.Y)), '0')
 }
