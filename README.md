@@ -18,8 +18,6 @@ Clone repository
 ```bash
 git clone https://github.com/omar0ali/breakout-game-cli.git
 ```
-```
-```
 
 Run the game
 
