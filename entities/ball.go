@@ -26,7 +26,7 @@ func (b *Ball) ResetBallPosition(ctx GameContext) {
 	})
 }
 
-func CreateBall(window *core.Window, config GameConfig) *Ball {
+func CreateBall(window *core.Window, config *utils.Config) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
 		// placing the ball (middle of the screen) start point
@@ -44,7 +44,7 @@ func CreateBall(window *core.Window, config GameConfig) *Ball {
 			X: 0,
 			Y: 0,
 		},
-		BallSpeed: config.BallSpeed,
+		BallSpeed: config.Ball.Speed,
 	}
 	return ball
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/omar0ali/breakout-game-cli/core"
 	"github.com/omar0ali/breakout-game-cli/entities"
+	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
 func main() {
@@ -16,16 +17,14 @@ func main() {
 	exit := make(chan int)
 	// gmae config
 
-	config := entities.GameConfig{
-		BallSpeed:         20,
-		PlayerSpeed:       50,
-		PlayerPaddleWidth: 10,
-		PlayerJumpBy:      5,
+	cfg, err := utils.LoadConfig("config.toml")
+	if err != nil {
+		log.Fatalf("Error loading config: %v", err)
 	}
 
 	// Objects
-	player := entities.CreatePlayer(window, config)
-	ball := entities.CreateBall(window, config)
+	player := entities.CreatePlayer(window, cfg)
+	ball := entities.CreateBall(window, cfg)
 	ctx := entities.GameContext{
 		Window: window,
 		Player: player,

@@ -22,16 +22,18 @@ type Player struct {
 	Traveled float64
 }
 
-func CreatePlayer(window *core.Window, config GameConfig) *Player {
+func CreatePlayer(window *core.Window, config *utils.Config) *Player {
 	screenWidth, _ := window.GetScreenSize()
-	startPositionOfPaddle := float64((screenWidth / 2) - (config.PlayerPaddleWidth / 2)) // the middle pos is that start drawing the the bar
+	startPositionOfPaddle := float64(
+		(screenWidth / 2) - (int(config.Player.PaddleWdith) / 2),
+	) // the middle pos is that start drawing the the bar
 
 	return &Player{
 		X:           startPositionOfPaddle,
 		Velocity:    utils.Velocity{X: 0, Y: 0},
-		PlayerSpeed: config.PlayerSpeed,
-		JumpBy:      float64(config.PlayerJumpBy),
-		PaddleWidth: config.PlayerPaddleWidth,
+		PlayerSpeed: config.Player.Speed,
+		JumpBy:      config.Player.JumpBy,
+		PaddleWidth: int(config.Player.PaddleWdith),
 	}
 }
 

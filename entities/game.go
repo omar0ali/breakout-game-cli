@@ -16,10 +16,3 @@ type Entity interface {
 	Update(ctx GameContext, dt float64)
 	Draw(ctx GameContext)
 }
-
-type GameConfig struct {
-	BallSpeed         float64
-	PlayerSpeed       float64
-	PlayerPaddleWidth int
-	PlayerJumpBy      int
-}
