@@ -25,13 +25,34 @@ func main() {
 	// Objects
 	player := entities.CreatePlayer(window, cfg)
 	ball := entities.CreateBall(window, cfg)
+	// TODO: needs refactoring: Creating a list of bricks on the screen. Clean up the code a bit
+	var bricks []entities.Brick
+	width, _ := window.GetScreenSize()
+	half := width / 2
+	for i := half / 2; i < half+half/2; i++ {
+		bricks = append(bricks, entities.Brick{
+			Point: utils.Point{
+				X: float64(i),
+				Y: float64(4),
+			},
+			Visible: true,
+		})
+	}
 	ctx := entities.GameContext{
 		Window: window,
 		Player: player,
 		Ball:   ball,
+		Bricks: bricks,
 		Objects: []entities.Entity{
-			player, ball,
+			player,
+			ball,
 		},
+	}
+
+	// TODO: here we ensure that all the bricks are added to the entity which ensures:
+	// 1. Draw() and 2. Update() are called
+	for i := 0; i < len(bricks); i++ {
+		ctx.Objects = append(ctx.Objects, &bricks[i])
 	}
 
 	window.InitEventsKeys(

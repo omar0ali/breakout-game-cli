@@ -9,6 +9,7 @@ type GameContext struct {
 	Window  *core.Window
 	Player  *Player
 	Ball    *Ball
+	Bricks  []Brick
 	Objects []Entity
 }
 
