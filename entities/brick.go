@@ -1,7 +1,6 @@
 package entities
 
 import (
-	"github.com/gdamore/tcell/v2"
 	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
@@ -40,6 +39,6 @@ func (b *Brick) Update(ctx GameContext, dt float64) {
 
 func (b *Brick) Draw(ctx GameContext) {
 	if b.Visible {
-		ctx.Window.SetContent(int(b.Point.X), int(b.Point.Y), tcell.RuneCkBoard)
+		ctx.Window.SetContent(int(b.Point.X), int(b.Point.Y), 'X')
 	}
 }
