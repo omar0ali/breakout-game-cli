@@ -10,10 +10,18 @@ type GameContext struct {
 	Player  *Player
 	Ball    *Ball
 	Bricks  []Brick
-	Objects []Entity
+	objects []Entity
 }
 
 type Entity interface {
 	Update(ctx GameContext, dt float64)
 	Draw(ctx GameContext)
+}
+
+func (ctx *GameContext) AddEntities(entities ...Entity) {
+	ctx.objects = append(ctx.objects, entities...)
+}
+
+func (ctx *GameContext) GetObjects() []Entity {
+	return ctx.objects
 }
