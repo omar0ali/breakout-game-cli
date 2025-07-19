@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"github.com/omar0ali/breakout-game-cli/core"
 	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
@@ -9,12 +10,31 @@ type Brick struct {
 	Visible bool
 }
 
-func CreateBrick(point utils.Point) *Brick {
+func createBrick(point utils.Point) *Brick {
 	brick := &Brick{
 		Point:   point,
 		Visible: true,
 	}
 	return brick
+}
+
+func CreateBricks(window *core.Window, cfg *utils.Config) []Brick {
+	var bricks []Brick
+	width, _ := window.GetScreenSize()
+	half := width / 2
+	for i := half / 2; i < half+half/2; i++ {
+		for y := range cfg.Brick.Level * 2 {
+			if y%2 == 0 {
+				bricks = append(bricks, *createBrick(utils.Point{
+					X: float64(i),
+					// start from y = 4 | giving a little gap at the top
+					Y: float64(4 + y),
+				}))
+			}
+		}
+	}
+
+	return bricks
 }
 
 func (b *Brick) SetVisibility(vis bool) {
