@@ -12,6 +12,10 @@ type Config struct {
 	Ball struct {
 		Speed float64 `toml:"speed"`
 	} `toml:"ball"`
+
+	Brick struct {
+		Level int `toml:"level"`
+	} `toml:"bricks"`
 }
 
 func LoadConfig(path string) (*Config, error) {

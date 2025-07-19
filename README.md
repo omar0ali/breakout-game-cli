@@ -12,7 +12,9 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 - [x] Smooth rendering in the terminal
     - FPS is visible, the game fixed at 30 frames per second.
 - [x] Add bricks for the player to break by the ball.
-    - [ ] Add more bricks
+    - Level / Height of bricks can be modified through the configuration file.
+
+- [ ] Add debug information
 
 ## Getting Started
 
@@ -25,7 +27,7 @@ git clone https://github.com/omar0ali/breakout-game-cli.git
 Run the game
 
 ```bash
-go run main.go
+go run .
 ```
 
 ### Configuration
@@ -41,6 +43,8 @@ jump_by = 8
 paddle_wdith = 10
 [ball]
 speed = 20
+[bricks]
+level = 3
 ```
 
 File is saved as `config.toml`
