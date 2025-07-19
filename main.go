@@ -31,7 +31,6 @@ func main() {
 		Window: window,
 		Player: player,
 		Ball:   ball,
-		Bricks: bricks,
 	}
 
 	// add player and ball into the screen (Objects)
