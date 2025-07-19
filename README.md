@@ -16,6 +16,9 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 
 - [ ] Add debug information
 
+- [ ] Add times the ball fell over the paddle
+- [ ] Add When breaking all the bricks the game resets or closes
+
 ## Getting Started
 
 Clone repository
