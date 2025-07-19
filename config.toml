@@ -4,3 +4,5 @@ jump_by = 8
 paddle_wdith = 10
 [ball]
 speed = 20
+[bricks]
+level = 3
