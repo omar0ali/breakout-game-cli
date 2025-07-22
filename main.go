@@ -10,17 +10,17 @@ import (
 )
 
 func main() {
-	window, err := core.CreateWindow("Breakout Game", 33) // frame rate can be changed from here
-	if err != nil {
-		log.Panic(err)
-	}
-	exit := make(chan int)
 	// gmae config
-
 	cfg, err := utils.LoadConfig("config.toml")
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)
 	}
+
+	window, err := core.CreateWindow("Breakout Game", cfg) // frame rate can be changed from here
+	if err != nil {
+		log.Panic(err)
+	}
+	exit := make(chan int)
 
 	// Objects
 	player := entities.CreatePlayer(window, cfg)

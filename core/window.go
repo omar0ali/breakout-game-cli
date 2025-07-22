@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
 type Window struct {
@@ -16,7 +17,7 @@ type Window struct {
 
 var delta float64
 
-func CreateWindow(title string, durationTicker time.Duration) (*Window, error) {
+func CreateWindow(title string, cfg *utils.Config) (*Window, error) {
 	screen, err := tcell.NewScreen()
 	if err != nil {
 		return nil, err
@@ -30,7 +31,7 @@ func CreateWindow(title string, durationTicker time.Duration) (*Window, error) {
 
 	window := &Window{
 		Screen: screen,
-		Ticker: time.NewTicker(durationTicker * time.Millisecond),
+		Ticker: time.NewTicker(time.Duration(cfg.Core.DurationTicker) * time.Millisecond),
 		Style:  tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorGreenYellow),
 	}
 	return window, nil

@@ -3,6 +3,9 @@ package utils
 import "github.com/BurntSushi/toml"
 
 type Config struct {
+	Core struct {
+		DurationTicker float64 `toml:"duration_ticker"`
+	} `toml:"core"`
 	Player struct {
 		Speed       float64 `toml:"speed"`
 		JumpBy      float64 `toml:"jump_by"`

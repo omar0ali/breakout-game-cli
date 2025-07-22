@@ -1,3 +1,5 @@
+[core]
+duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
 [player]
 speed = 60
 jump_by = 8
