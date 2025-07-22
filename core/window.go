@@ -77,8 +77,7 @@ func (s *Window) InitEventsKeys(
 
 func (s *Window) GetScreenSize() (int, int) {
 	s.Screen.Sync()
-	width, height := s.Screen.Size()
-	return width, height
+	return s.Screen.Size()
 }
 
 func (s *Window) Close() {
