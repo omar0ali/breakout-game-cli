@@ -41,17 +41,42 @@ func (b *Brick) SetVisibility(vis bool) {
 	b.Visible = vis
 }
 
+// TODO: (brick collision)
+
 func (b *Brick) Update(ctx GameContext, dt float64) {
-	if int(ctx.Ball.Point.X) == int(b.Point.X) &&
-		int(ctx.Ball.Point.Y) == int(b.Point.Y) {
-		if b.Visible {
-			b.SetVisibility(false)
-			if ctx.Ball.Direction.Down {
-				ctx.Ball.Direction.Down = false
-				ctx.Ball.Direction.Up = true
-			} else if ctx.Ball.Direction.Up {
-				ctx.Ball.Direction.Down = true
+	if !b.Visible {
+		return
+	}
+	const fuzzyThreshold = 1
+
+	brickX := b.Point.X
+	brickY := b.Point.Y
+	ballX := ctx.Ball.Point.X
+	ballY := ctx.Ball.Point.Y
+
+	if abs(ballX-brickX) <= fuzzyThreshold && abs(ballY-brickY) <= fuzzyThreshold {
+		b.SetVisibility(false)
+
+		// direction offset, the higher the closer
+		dx := ballX - brickX
+		dy := ballY - brickY
+
+		// collision (horizontal or vertical)
+		if abs(dx) > abs(dy) {
+			if dx > 0 {
+				ctx.Ball.Direction.Left = false
+				ctx.Ball.Direction.Right = true
+			} else {
+				ctx.Ball.Direction.Right = false
+				ctx.Ball.Direction.Left = true
+			}
+		} else {
+			if dy > 0 {
 				ctx.Ball.Direction.Up = false
+				ctx.Ball.Direction.Down = true
+			} else {
+				ctx.Ball.Direction.Up = true
+				ctx.Ball.Direction.Down = false
 			}
 		}
 	}
@@ -61,4 +86,11 @@ func (b *Brick) Draw(ctx GameContext) {
 	if b.Visible {
 		ctx.Window.SetContent(int(b.Point.X), int(b.Point.Y), 'X')
 	}
+}
+
+func abs(n float64) float64 {
+	if n < 0 {
+		return -n
+	}
+	return n
 }
