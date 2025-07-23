@@ -26,11 +26,15 @@ func main() {
 	player := entities.CreatePlayer(window, cfg)
 	ball := entities.CreateBall(window, cfg)
 	bricks := entities.CreateBricks(window, cfg)
+	debug := core.CreateDebug(utils.Point{
+		X: 0, Y: 1,
+	}, cfg)
 
 	ctx := entities.GameContext{
 		Window: window,
 		Player: player,
 		Ball:   ball,
+		Debug:  &debug,
 	}
 
 	// add player and ball into the screen (Objects)
@@ -56,6 +60,7 @@ func main() {
 				obj.Draw(ctx)
 				obj.Update(ctx, delta)
 			}
+			debug.Draw(window)
 		}, exit,
 	)
 

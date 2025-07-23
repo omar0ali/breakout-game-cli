@@ -13,6 +13,7 @@ type GameContext struct {
 	Player  *Player
 	Ball    *Ball
 	objects []Entity
+	Debug   *core.Debug
 }
 
 type Entity interface {

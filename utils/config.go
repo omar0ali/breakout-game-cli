@@ -1,10 +1,13 @@
 package utils
 
-import "github.com/BurntSushi/toml"
+import (
+	"github.com/BurntSushi/toml"
+)
 
 type Config struct {
 	Core struct {
 		DurationTicker float64 `toml:"duration_ticker"`
+		Debug          bool    `toml:"debug"`
 	} `toml:"core"`
 	Player struct {
 		Speed       float64 `toml:"speed"`
