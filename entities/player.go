@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/gdamore/tcell/v2"
@@ -38,6 +39,7 @@ func CreatePlayer(window *core.Window, config *utils.Config) *Player {
 }
 
 func (p *Player) Draw(ctx GameContext) {
+	ctx.Debug.AddLine(fmt.Sprintf("Paddle: Moving: %v, PosX: %d", p.Moving, (int(p.X)+p.PaddleWidth)/2))
 	_, height := ctx.Window.GetScreenSize()
 	for i := 0; i < p.PaddleWidth; i++ {
 		ctx.Window.SetContent(int(p.X+float64(i)), height-1, tcell.RuneBlock)
