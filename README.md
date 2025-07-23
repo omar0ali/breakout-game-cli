@@ -9,12 +9,18 @@ A simple terminal-based implementation of the classic **Breakout** game written 
     - Added animation when the paddle is moved, to give it a little bit of smoothness while moving.
 - [x] Ball animation and basic collision with walls and paddle
     - Ensure all objects on screen are smooth even when frame rate fluctuates.
+    - Added additional brick collision, when the ball hits the sides of the brick, the ball changes
+        direction.
 - [x] Smooth rendering in the terminal
     - FPS is visible, the game fixed at 30 frames per second.
 - [x] Add bricks for the player to break by the ball.
     - Level / Height of bricks can be modified through the configuration file.
 
-- [ ] Add debug information
+- [X] FPS can be configured through the configuration file.
+
+- [X] Add debug information
+    - To enable debug mode - can be enabled by adding `debug=true` under `core` in the 
+        configuration file.
 
 - [ ] Add times the ball fell over the paddle
 - [ ] Add When breaking all the bricks the game resets or closes
@@ -40,6 +46,9 @@ the paddle width to fit the player need.
 Example
 
 ```bash
+[core]
+duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
+debug = true
 [player]
 speed = 60
 jump_by = 8
