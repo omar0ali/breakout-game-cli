@@ -1,6 +1,7 @@
 package entities
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/omar0ali/breakout-game-cli/core"
@@ -65,21 +66,26 @@ func (b *Ball) Update(ctx GameContext, dt float64) {
 		if b.Point.X < playerStartX || b.Point.X > playerEndX {
 			b.ResetBallPosition(ctx)
 		}
+		ctx.Debug.AddLine("Ball: Up")
 		b.Direction.Down = false
 		b.Direction.Up = true
 	}
 	if b.Point.Y <= 0 {
+		ctx.Debug.AddLine("Ball: Down")
 		b.Direction.Up = false
 		b.Direction.Down = true
 	}
 	if b.Point.X <= 0 {
+		ctx.Debug.AddLine("Ball: Right")
 		b.Direction.Left = false
 		b.Direction.Right = true
 	}
 	if b.Point.X >= float64(width-1) {
+		ctx.Debug.AddLine("Ball: Left")
 		b.Direction.Left = true
 		b.Direction.Right = false
 	}
+	ctx.Debug.AddLine(fmt.Sprintf("Ball: X: %.2f, Y: %.2f", b.Point.X, b.Point.Y))
 }
 
 func (b *Ball) Draw(ctx GameContext) {
