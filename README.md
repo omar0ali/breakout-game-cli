@@ -16,14 +16,15 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 - [x] Add bricks for the player to break by the ball.
     - Level / Height of bricks can be modified through the configuration file.
 
-- [X] FPS can be configured through the configuration file.
+- [x] FPS can be configured through the configuration file.
 
-- [X] Add debug information
+- [x] Add debug information
     - To enable debug mode - can be enabled by adding `debug=true` under `core` in the 
         configuration file.
-- [X] Added mouse support, to enable `mouse=true`.
-- [ ] Add times the ball fell over the paddle
-- [ ] Add When breaking all the bricks the game resets or closes
+- [x] Added mouse support, to enable `mouse=true`
+- [x] Added multi ball game, hitting the space bar will shoot them, *limited to 10 balls a game*.
+- [ ] Add times the ball fell over the paddle.
+- [ ] Status Bar to show player details.
 
 ## Getting Started
 
