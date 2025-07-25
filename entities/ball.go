@@ -8,7 +8,10 @@ import (
 	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
+var ballCounter int
+
 type Ball struct {
+	ID        int
 	Point     utils.Point
 	Direction utils.Direction
 	Velocity  utils.Velocity
@@ -19,7 +22,7 @@ func (b *Ball) SetBallPosition(point utils.Point) {
 	b.Point = point
 }
 
-func (b *Ball) ResetBallPosition(ctx GameContext) {
+func (b *Ball) ResetBallPosition(ctx *GameContext) {
 	_, height := ctx.Window.GetScreenSize()
 	playerPos := ctx.Player.X + (float64(ctx.Player.PaddleWidth) / 2)
 	b.SetBallPosition(utils.Point{
@@ -28,10 +31,15 @@ func (b *Ball) ResetBallPosition(ctx GameContext) {
 	})
 }
 
+func (b *Ball) GetID() int {
+	return b.ID
+}
+
 func CreateBall(window *core.Window, config *utils.Config) *Ball {
 	width, height := window.GetScreenSize()
 	ball := &Ball{
 		// placing the ball (middle of the screen) start point
+		ID: ballCounter,
 		Point: utils.Point{
 			X: float64(width / 2),
 			Y: float64(height - 2),
@@ -39,7 +47,7 @@ func CreateBall(window *core.Window, config *utils.Config) *Ball {
 		Direction: utils.Direction{
 			Up:    true,
 			Down:  false,
-			Left:  false,
+			Left:  true,
 			Right: false,
 		},
 		Velocity: utils.Velocity{
@@ -48,10 +56,11 @@ func CreateBall(window *core.Window, config *utils.Config) *Ball {
 		},
 		BallSpeed: config.Ball.Speed,
 	}
+	ballCounter++
 	return ball
 }
 
-func (b *Ball) Update(ctx GameContext, dt float64) {
+func (b *Ball) Update(ctx *GameContext, dt float64) {
 	width, height := ctx.Window.GetScreenSize()
 	b.Velocity.SetFromDirection(b.BallSpeed, b.Direction.Up, b.Direction.Down, b.Direction.Left, b.Direction.Right)
 
@@ -61,11 +70,13 @@ func (b *Ball) Update(ctx GameContext, dt float64) {
 	// bounce logic
 	if b.Point.Y >= float64(height) {
 		playerStartX := float64(ctx.Player.X - 1)
+
 		playerEndX := ctx.Player.X + float64(ctx.Player.PaddleWidth)
 
 		// ball fall over the paddle
 		if b.Point.X < playerStartX || b.Point.X > playerEndX {
-			b.ResetBallPosition(ctx)
+			ctx.RemoveEntity(b)
+			delete(ctx.Balls, b.GetID())
 		}
 		b.Direction.Down = false
 		b.Direction.Up = true
@@ -82,7 +93,7 @@ func (b *Ball) Update(ctx GameContext, dt float64) {
 		b.Direction.Left = true
 		b.Direction.Right = false
 	}
-	ctx.Debug.AddLine(fmt.Sprintf("Ball: X: %.2f, Y: %.2f", b.Point.X, b.Point.Y))
+	ctx.Debug.AddLine(fmt.Sprintf("%d Ball: X: %.2f, Y: %.2f", b.ID, b.Point.X, b.Point.Y))
 	if b.Direction.Left {
 		ctx.Debug.AddLine("Ball: Left")
 	}
@@ -97,6 +108,6 @@ func (b *Ball) Update(ctx GameContext, dt float64) {
 	}
 }
 
-func (b *Ball) Draw(ctx GameContext) {
+func (b *Ball) Draw(ctx *GameContext) {
 	ctx.Window.SetContent(int(math.Round(b.Point.X)), int(math.Round(b.Point.Y)), '0')
 }

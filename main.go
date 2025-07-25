@@ -27,22 +27,22 @@ func main() {
 	}
 
 	// Objects
+	balls := make(map[int]*entities.Ball)
 	player := entities.CreatePlayer(window, cfg)
-	ball := entities.CreateBall(window, cfg)
 	bricks := entities.CreateBricks(window, cfg)
 	debug := core.CreateDebug(utils.Point{
 		X: 0, Y: 1,
 	}, cfg)
 
-	ctx := entities.GameContext{
+	ctx := &entities.GameContext{
 		Window: window,
 		Player: player,
-		Ball:   ball,
+		Balls:  balls,
 		Debug:  &debug,
 	}
 
 	// add player and ball into the screen (Objects)
-	ctx.AddEntities(ball, player)
+	ctx.AddEntities(player)
 
 	// add bricks into the game screen (Objects)
 	for i := range len(bricks) {
@@ -59,6 +59,9 @@ func main() {
 					player.TurnLeft()
 				case tcell.KeyRight:
 					player.TurnRigth()
+				}
+				if ev.Rune() == ' ' {
+					player.ShootBall(ctx, cfg)
 				}
 			case *tcell.EventMouse:
 				x, y := ev.Position()

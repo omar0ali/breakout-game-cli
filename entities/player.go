@@ -21,6 +21,9 @@ type Player struct {
 	Moving   bool
 	TargetX  float64
 	Traveled float64
+
+	// number of balls
+	Balls int
 }
 
 func CreatePlayer(window *core.Window, config *utils.Config) *Player {
@@ -35,10 +38,11 @@ func CreatePlayer(window *core.Window, config *utils.Config) *Player {
 		PlayerSpeed: config.Player.Speed,
 		JumpBy:      config.Player.JumpBy,
 		PaddleWidth: int(config.Player.PaddleWdith),
+		Balls:       10, // limited balls can be used on one game
 	}
 }
 
-func (p *Player) Draw(ctx GameContext) {
+func (p *Player) Draw(ctx *GameContext) {
 	ctx.Debug.AddLine(fmt.Sprintf("Paddle: Moving: %v, PosX: %d", p.Moving, (int(p.X)+p.PaddleWidth)/2))
 	_, height := ctx.Window.GetScreenSize()
 	for i := 0; i < p.PaddleWidth; i++ {
@@ -66,11 +70,28 @@ func (p *Player) TurnRigth() {
 	p.TargetX = p.X + p.JumpBy
 }
 
+func (p *Player) ShootBall(ctx *GameContext, cfg *utils.Config) {
+	if p.Balls <= 0 {
+		return
+	}
+
+	ball := CreateBall(ctx.Window, cfg)
+	ctx.Balls[ball.GetID()] = ball
+
+	// ball at the player location
+	ball.ResetBallPosition(ctx)
+
+	// add ball to the screen
+	ctx.AddEntities(ball)
+
+	p.Balls -= 1
+}
+
 func (p *Player) SetPosition(x, _ int) {
 	p.X = float64(x) - float64(p.PaddleWidth/2)
 }
 
-func (p *Player) Update(ctx GameContext, dt float64) {
+func (p *Player) Update(ctx *GameContext, dt float64) {
 	if !p.Moving {
 		return
 	}

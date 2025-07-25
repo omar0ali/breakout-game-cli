@@ -43,7 +43,7 @@ func (b *Brick) SetVisibility(vis bool) {
 
 // TODO: (brick collision)
 
-func (b *Brick) Update(ctx GameContext, dt float64) {
+func (b *Brick) Update(ctx *GameContext, dt float64) {
 	if !b.Visible {
 		return
 	}
@@ -51,38 +51,39 @@ func (b *Brick) Update(ctx GameContext, dt float64) {
 
 	brickX := b.Point.X
 	brickY := b.Point.Y
-	ballX := ctx.Ball.Point.X
-	ballY := ctx.Ball.Point.Y
 
-	if abs(ballX-brickX) <= fuzzyThreshold && abs(ballY-brickY) <= fuzzyThreshold {
-		b.SetVisibility(false)
+	for _, ball := range ctx.Balls {
+		ballX := ball.Point.X
+		ballY := ball.Point.Y
 
-		// direction offset, the higher the closer
-		dx := ballX - brickX
-		dy := ballY - brickY
+		if abs(ballX-brickX) <= fuzzyThreshold && abs(ballY-brickY) <= fuzzyThreshold {
+			b.SetVisibility(false)
 
-		// collision (horizontal or vertical)
-		if abs(dx) > abs(dy) {
-			if dx > 0 {
-				ctx.Ball.Direction.Left = false
-				ctx.Ball.Direction.Right = true
+			dx := ballX - brickX
+			dy := ballY - brickY
+
+			if abs(dx) > abs(dy) {
+				if dx > 0 {
+					ball.Direction.Left = false
+					ball.Direction.Right = true
+				} else {
+					ball.Direction.Right = false
+					ball.Direction.Left = true
+				}
 			} else {
-				ctx.Ball.Direction.Right = false
-				ctx.Ball.Direction.Left = true
-			}
-		} else {
-			if dy > 0 {
-				ctx.Ball.Direction.Up = false
-				ctx.Ball.Direction.Down = true
-			} else {
-				ctx.Ball.Direction.Up = true
-				ctx.Ball.Direction.Down = false
+				if dy > 0 {
+					ball.Direction.Up = false
+					ball.Direction.Down = true
+				} else {
+					ball.Direction.Up = true
+					ball.Direction.Down = false
+				}
 			}
 		}
 	}
 }
 
-func (b *Brick) Draw(ctx GameContext) {
+func (b *Brick) Draw(ctx *GameContext) {
 	if b.Visible {
 		ctx.Window.SetContent(int(b.Point.X), int(b.Point.Y), 'X')
 	}
