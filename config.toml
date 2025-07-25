@@ -1,6 +1,7 @@
 [core]
 duration_ticker = 16 # Target frame/update interval in milliseconds (actual FPS may vary)
 debug = true
+mouse = true
 [player]
 speed = 60
 jump_by = 8

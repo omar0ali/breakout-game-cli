@@ -8,6 +8,7 @@ type Config struct {
 	Core struct {
 		DurationTicker float64 `toml:"duration_ticker"`
 		Debug          bool    `toml:"debug"`
+		Mouse          bool    `toml:"mouse"`
 	} `toml:"core"`
 	Player struct {
 		Speed       float64 `toml:"speed"`

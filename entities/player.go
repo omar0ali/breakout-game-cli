@@ -66,6 +66,10 @@ func (p *Player) TurnRigth() {
 	p.TargetX = p.X + p.JumpBy
 }
 
+func (p *Player) SetPosition(x, _ int) {
+	p.X = float64(x) - float64(p.PaddleWidth/2)
+}
+
 func (p *Player) Update(ctx GameContext, dt float64) {
 	if !p.Moving {
 		return

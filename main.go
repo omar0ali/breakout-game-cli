@@ -22,6 +22,10 @@ func main() {
 	}
 	exit := make(chan int)
 
+	if cfg.Core.Mouse {
+		window.Screen.EnableMouse()
+	}
+
 	// Objects
 	player := entities.CreatePlayer(window, cfg)
 	ball := entities.CreateBall(window, cfg)
@@ -46,13 +50,19 @@ func main() {
 	}
 
 	window.InitEventsKeys(
-		func(ek *tcell.EventKey, delta float64) {
-			switch ek.Key() {
+		func(ek tcell.Event, delta float64) {
+			switch ev := ek.(type) {
 			// to update an object coordiatnes, not to animate
-			case tcell.KeyLeft:
-				player.TurnLeft()
-			case tcell.KeyRight:
-				player.TurnRigth()
+			case *tcell.EventKey:
+				switch ev.Key() {
+				case tcell.KeyLeft:
+					player.TurnLeft()
+				case tcell.KeyRight:
+					player.TurnRigth()
+				}
+			case *tcell.EventMouse:
+				x, y := ev.Position()
+				player.SetPosition(x, y)
 			}
 		}, func(delta float64) {
 			// animation to draw

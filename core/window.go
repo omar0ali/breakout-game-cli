@@ -38,7 +38,7 @@ func CreateWindow(title string, cfg *utils.Config) (*Window, error) {
 }
 
 func (s *Window) InitEventsKeys(
-	callbackEvents func(ev *tcell.EventKey, delta float64),
+	callbackEvents func(ev tcell.Event, delta float64),
 	callbackFrames func(delta float64),
 	exit chan int,
 ) {
@@ -54,8 +54,8 @@ func (s *Window) InitEventsKeys(
 					exit <- 0
 					return
 				}
-				callbackEvents(ev, delta)
 			}
+			callbackEvents(events, delta)
 		}
 	}()
 	go func() {

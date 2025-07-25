@@ -21,7 +21,7 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 - [X] Add debug information
     - To enable debug mode - can be enabled by adding `debug=true` under `core` in the 
         configuration file.
-
+- [X] Added mouse support, to enable `mouse=true`.
 - [ ] Add times the ball fell over the paddle
 - [ ] Add When breaking all the bricks the game resets or closes
 
@@ -49,6 +49,7 @@ Example
 [core]
 duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
 debug = true
+mouse = true
 [player]
 speed = 60
 jump_by = 8
@@ -62,4 +63,5 @@ level = 3
 File is saved as `config.toml`
 
 ### Controls
-The paddle can be moved left and right using the `Arrow Keys`. Will add mouse controls later.
+- The paddle can be moved left and right using the `Arrow Keys`.
+- Mouse control is now supported.
