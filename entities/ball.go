@@ -20,10 +20,11 @@ func (b *Ball) SetBallPosition(point utils.Point) {
 }
 
 func (b *Ball) ResetBallPosition(ctx GameContext) {
-	width, height := ctx.Window.GetScreenSize()
+	_, height := ctx.Window.GetScreenSize()
+	playerPos := ctx.Player.X + (float64(ctx.Player.PaddleWidth) / 2)
 	b.SetBallPosition(utils.Point{
-		X: float64(width / 2),
-		Y: float64(height / 2),
+		X: playerPos,
+		Y: float64(height - 2),
 	})
 }
 
@@ -33,12 +34,12 @@ func CreateBall(window *core.Window, config *utils.Config) *Ball {
 		// placing the ball (middle of the screen) start point
 		Point: utils.Point{
 			X: float64(width / 2),
-			Y: float64(height / 2),
+			Y: float64(height - 2),
 		},
 		Direction: utils.Direction{
-			Up:    false,
-			Down:  true,
-			Left:  true,
+			Up:    true,
+			Down:  false,
+			Left:  false,
 			Right: false,
 		},
 		Velocity: utils.Velocity{
