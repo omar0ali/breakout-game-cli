@@ -68,6 +68,9 @@ func main() {
 			case *tcell.EventMouse:
 				x, y := ev.Position()
 				player.SetPosition(x, y)
+				if ev.Buttons() == tcell.Button1 {
+					player.ShootBall(ctx, cfg)
+				}
 			}
 		}, func(delta float64) {
 			// animation to draw
