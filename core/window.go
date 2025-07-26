@@ -49,7 +49,7 @@ func (s *Window) InitEventsKeys(
 			case *tcell.EventResize:
 				s.Screen.Sync()
 			case *tcell.EventKey:
-				if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC {
+				if ev.Key() == tcell.KeyEscape || ev.Key() == tcell.KeyCtrlC || ev.Rune() == 'q' {
 					s.Close()
 					exit <- 0
 					return
