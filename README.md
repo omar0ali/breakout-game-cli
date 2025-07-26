@@ -48,15 +48,16 @@ Example
 
 ```bash
 [core]
-duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
+duration_ticker = 16 # Target frame/update interval in milliseconds (actual FPS may vary)
 debug = true
 mouse = true
 [player]
 speed = 60
 jump_by = 8
 paddle_wdith = 10
+balls = 10 # number of balls a player can have start of the game
 [ball]
-speed = 20
+speed = 17
 [bricks]
 level = 3
 ```

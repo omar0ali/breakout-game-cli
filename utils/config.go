@@ -14,6 +14,7 @@ type Config struct {
 		Speed       float64 `toml:"speed"`
 		JumpBy      float64 `toml:"jump_by"`
 		PaddleWdith float64 `toml:"paddle_wdith"`
+		Balls       int     `toml:"balls"`
 	} `toml:"player"`
 
 	Ball struct {

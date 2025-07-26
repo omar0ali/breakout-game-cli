@@ -6,6 +6,7 @@ mouse = true
 speed = 60
 jump_by = 8
 paddle_wdith = 10
+balls = 10
 [ball]
 speed = 17
 [bricks]

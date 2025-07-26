@@ -38,7 +38,7 @@ func CreatePlayer(window *core.Window, config *utils.Config) *Player {
 		PlayerSpeed: config.Player.Speed,
 		JumpBy:      config.Player.JumpBy,
 		PaddleWidth: int(config.Player.PaddleWdith),
-		Balls:       10, // limited balls can be used on one game
+		Balls:       config.Player.Balls,
 	}
 }
 
