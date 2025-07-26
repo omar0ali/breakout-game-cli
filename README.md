@@ -24,7 +24,7 @@ A simple terminal-based implementation of the classic **Breakout** game written 
 - [x] Added mouse support, to enable `mouse=true`
 - [x] Added multi ball game, hitting the space bar will shoot them, *limited to 10 balls a game*.
 - [ ] Add times the ball fell over the paddle.
-- [ ] Status Bar to show player details.
+- [x] Status Bar to show player details.
 
 ## Getting Started
 
