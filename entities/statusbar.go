@@ -1,6 +1,9 @@
 package entities
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 type Section int
 
@@ -15,17 +18,19 @@ type SectionData struct {
 }
 
 type StatusBar struct {
-	Sections map[Section]*SectionData
-	Ctx      *GameContext
+	Sections  map[Section]*SectionData
+	StartTime time.Time
+	Ctx       *GameContext
 }
 
 func CreateStatusBar(ctx *GameContext) *StatusBar {
+	starTime := time.Now()
 	return &StatusBar{
 		Sections: map[Section]*SectionData{
 			TOPRIGHT:    {Lines: []string{}},
 			BOTTOMRIGHT: {Lines: []string{}},
 			BOTTOMLEFT:  {Lines: []string{}},
-		}, Ctx: ctx,
+		}, Ctx: ctx, StartTime: starTime,
 	}
 }
 
@@ -34,6 +39,16 @@ func (s *StatusBar) Update(ctx *GameContext, dt float64) {
 	s.AddLine(fmt.Sprintf("Bricks: %v", totalBricks), TOPRIGHT)
 	// s.AddLine(fmt.Sprintf("Balls: %v", ctx.Player.Balls), BOTTOMRIGHT)
 	// s.AddLine(fmt.Sprintf("Balls: %v", ctx.Player.Balls), BOTTOMLEFT)
+
+	// Timer
+	elapsed := time.Since(s.StartTime)
+	elapsedMinutes := int(elapsed.Minutes())
+	elapsedSeconds := int(elapsed.Seconds()) % 60
+
+	s.AddLine(fmt.Sprintf("%02d:%02d s",
+		elapsedMinutes,
+		elapsedSeconds,
+	), TOPRIGHT)
 }
 
 func (s *StatusBar) Draw(ctx *GameContext) {

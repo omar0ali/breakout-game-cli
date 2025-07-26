@@ -50,7 +50,6 @@ func main() {
 	for i := range len(bricks) {
 		ctx.AddEntities(&bricks[i])
 	}
-
 	window.InitEventsKeys(
 		func(ek tcell.Event, delta float64) {
 			switch ev := ek.(type) {
