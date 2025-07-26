@@ -41,10 +41,12 @@ func main() {
 		Debug:  &debug,
 	}
 
+	statusBar := entities.CreateStatusBar(ctx)
 	// add player and ball into the screen (Objects)
-	ctx.AddEntities(player)
+	ctx.AddEntities(player, statusBar)
 
 	// add bricks into the game screen (Objects)
+
 	for i := range len(bricks) {
 		ctx.AddEntities(&bricks[i])
 	}
