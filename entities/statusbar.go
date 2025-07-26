@@ -31,6 +31,7 @@ func CreateStatusBar(ctx *GameContext) *StatusBar {
 
 func (s *StatusBar) Update(ctx *GameContext, dt float64) {
 	s.AddLine(fmt.Sprintf("Balls: %v", ctx.Player.Balls), TOPRIGHT)
+	s.AddLine(fmt.Sprintf("Bricks: %v", totalBricks), TOPRIGHT)
 	// s.AddLine(fmt.Sprintf("Balls: %v", ctx.Player.Balls), BOTTOMRIGHT)
 	// s.AddLine(fmt.Sprintf("Balls: %v", ctx.Player.Balls), BOTTOMLEFT)
 }

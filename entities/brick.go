@@ -5,6 +5,8 @@ import (
 	"github.com/omar0ali/breakout-game-cli/utils"
 )
 
+var totalBricks int = 0
+
 type Brick struct {
 	Point   utils.Point
 	Visible bool
@@ -15,6 +17,7 @@ func createBrick(point utils.Point) *Brick {
 		Point:   point,
 		Visible: true,
 	}
+	totalBricks++
 	return brick
 }
 
@@ -28,7 +31,7 @@ func CreateBricks(window *core.Window, cfg *utils.Config) []Brick {
 				bricks = append(bricks, *createBrick(utils.Point{
 					X: float64(i),
 					// start from y = 4 | giving a little gap at the top
-					Y: float64(4 + y),
+					Y: float64(5 + y),
 				}))
 			}
 		}
@@ -58,6 +61,7 @@ func (b *Brick) Update(ctx *GameContext, dt float64) {
 
 		if abs(ballX-brickX) <= fuzzyThreshold && abs(ballY-brickY) <= fuzzyThreshold {
 			b.SetVisibility(false)
+			totalBricks--
 
 			dx := ballX - brickX
 			dy := ballY - brickY
