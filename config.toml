@@ -1,5 +1,5 @@
 [core]
-duration_ticker = 16 # Target frame/update interval in milliseconds (actual FPS may vary)
+duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
 debug = false
 mouse = true
 [player]
