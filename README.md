@@ -23,8 +23,10 @@ A simple terminal-based implementation of the classic **Breakout** game written 
         configuration file.
 - [x] Added mouse support, to enable `mouse=true`
 - [x] Added multi ball game, hitting the space bar will shoot them, *limited to 10 balls a game*.
-- [ ] Add times the ball fell over the paddle.
 - [x] Status Bar to show player details.
+- [x] Added 'You Win!' message at the end, when destroying all the bricks.
+- [x] Showing a message before starting the game 'Click the left mouse button to get started!' as 
+a tutorial.
 
 ## Getting Started
 
