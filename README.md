@@ -50,8 +50,8 @@ Example
 
 ```bash
 [core]
-duration_ticker = 16 # Target frame/update interval in milliseconds (actual FPS may vary)
-debug = true
+duration_ticker = 33 # Target frame/update interval in milliseconds (actual FPS may vary)
+debug = false
 mouse = true
 [player]
 speed = 60
@@ -69,3 +69,5 @@ File is saved as `config.toml`
 ### Controls
 - The paddle can be moved left and right using the `Arrow Keys`.
 - Mouse control is now supported.
+- `ESC`, `q` To quit / stop the game.
+- `Space`, `Mouse Left Click` shooting the ball out of the paddle.
