@@ -66,7 +66,7 @@ func (s *Window) InitEventsKeys(
 			last = now
 
 			s.Screen.Clear()
-			lenStr := []rune(fmt.Sprintf("Delta: %.4f s | FPS: %.2f", delta, (1 / delta)))
+			lenStr := []rune(fmt.Sprintf("FPS: %.2f", (1 / delta)))
 			for i, r := range lenStr {
 				s.SetContent(i, 0, r)
 			}
