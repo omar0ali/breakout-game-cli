@@ -1,0 +1,29 @@
+permissions:
+  contents: write
+  packages: write
+name: Build and Release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.24'
+      - name: Build binaries
+        run: |
+          mkdir -p dist
+          GOOS=linux GOARCH=amd64 go build -o dist/breakout-game-linux main.go
+          GOOS=windows GOARCH=amd64 go build -o dist/breakout-game-windows.exe main.go
+          GOOS=darwin GOARCH=amd64 go build -o dist/breakout-game-mac main.go
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "dist/*"
+          tag: ${{ github.ref }}
+
