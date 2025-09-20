@@ -2,7 +2,7 @@
 
 A simple terminal-based implementation of the classic **Breakout** game written in **Go**, using the [`tcell`](https://github.com/gdamore/tcell) library for handling terminal graphics and input.
 
-![game-screenshot](https://github.com/omar0ali/breakout-game-cli/blob/main/screenshots/breakout-game-screenshot.png)
+![game-screenshot](https://raw.githubusercontent.com/omar0ali/breakout-game-cli/refs/heads/main/screenshots/breakout-game-screenshot.png)
 
 ## Features
 - [x] Paddle movement using arrow keys
